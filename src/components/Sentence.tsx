@@ -1,11 +1,10 @@
-import List from './List'
-import React from 'react'
+import QualifierList from "./QualifierList"
 
 export default function Sentence() {
   return (
     <div>
-      <h2>Clique nos requisitos abaixo que tenham relação com o caso</h2>
-      <List />
+      <h2>Clique nas qualificadoras do caso</h2>
+      <QualifierList />
     </div>
   )
 }
