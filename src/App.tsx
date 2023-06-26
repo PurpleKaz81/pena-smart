@@ -6,7 +6,7 @@ import { ChakraProvider, Box } from "@chakra-ui/react"
 export default function App() {
   return (
       <ChakraProvider>
-        <Box minH="100vh" minW="100vw">
+        <Box minH="100vh" minW="100vw" display="grid" gridTemplateRows="auto 1fr" alignItems="top" justifyContent="center">
           <HeaderSlogan />
           <Sentence />
         </Box>

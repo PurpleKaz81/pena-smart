@@ -1,5 +1,5 @@
 import { Tooltip } from "@chakra-ui/react"
-import { Box } from "@chakra-ui/react"
+import { Box, StackDivider, VStack, Checkbox } from "@chakra-ui/react"
 
 const qualifiers = [
   { id: "qualifier-1", label: "inciso I", value: "mediante paga ou promessa de recompensa, ou por outro motivo torpe" },
@@ -15,17 +15,23 @@ const qualifiers = [
 
 export default function QualifierList() {
   return (
-    <Box>
-      <div>
-        {qualifiers.map(qualifier => (
-          <div key={qualifier.id}>
-            <input type="checkbox" id={qualifier.id} name={qualifier.id} value={qualifier.value} />
-              <Tooltip label={qualifier.value}>
-                <label htmlFor={qualifier.id}>{qualifier.label}</label>
-              </Tooltip>
-          </div>
-        ))}
-      </div>
-    </Box>
+    <VStack
+    divider={<StackDivider borderColor='gray.200' />}
+    spacing={1}
+    align='start'
+    mt={4}
+    >
+      {qualifiers.map(qualifier => (
+        <div key={qualifier.id}>
+          <Box>
+            <Tooltip label={qualifier.value}>
+              <Checkbox spacing="1rem" id={qualifier.id} name={qualifier.id} value={qualifier.value}>
+                  {qualifier.label}
+              </Checkbox>
+            </Tooltip>
+          </Box>
+        </div>
+      ))}
+    </VStack>
   )
 }
