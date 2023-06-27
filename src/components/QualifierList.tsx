@@ -1,4 +1,5 @@
-import { VStack, StackDivider, Tooltip, Box, HStack, Checkbox, Text, } from "@chakra-ui/react"
+import { VStack, StackDivider, Tooltip, Box, HStack, Checkbox, Text, Flex, Spacer } from "@chakra-ui/react"
+import { useState } from "react"
 
 const qualifiers = [
   { id: "qualifier-1", label: "inciso I", value: "mediante paga ou promessa de recompensa, ou por outro motivo torpe", years: 0 },
@@ -13,6 +14,16 @@ const qualifiers = [
 ]
 
 export default function QualifierList() {
+  const [totalYears, setTotalYears] = useState(0)
+
+  function handleCheckboxChange(qualifier, event) {
+    if (event.target.checked) {
+      setTotalYears(totalYears + qualifier.years)
+    } else {
+      setTotalYears(totalYears - qualifier.years)
+    }
+  }
+
   return (
     <VStack
       divider={<StackDivider borderColor='gray.200' />}
@@ -22,18 +33,35 @@ export default function QualifierList() {
     >
       {qualifiers.map(qualifier => (
         <div className="qualifier" key={qualifier.id}>
-          <Tooltip label={qualifier.value}>
-            <Box>
-              <HStack justifyContent="space-between" w="100%">
-                <Checkbox spacing="1rem" id={qualifier.id} name={qualifier.id} value={qualifier.value}>
+          <Box>
+            <HStack justifyContent="space-between" w="100%">
+              <Checkbox
+                spacing="1rem"
+                id={qualifier.id}
+                name={qualifier.id}
+                value={qualifier.value}
+                onChange={(event) => handleCheckboxChange(qualifier, event)}
+              >
+                <Tooltip label={qualifier.value}>
                   {qualifier.label}
-                </Checkbox>
-                <Text visibility="visible">{qualifier.years}</Text>
-              </HStack>
-            </Box>
-          </Tooltip>
+                </Tooltip>
+              </Checkbox>
+              <Text visibility="visible">{qualifier.years}</Text>
+            </HStack>
+          </Box>
         </div>
       ))}
+      <div>
+        <Flex>
+          <Box>
+            Soma das qualificadoras:
+          </Box>
+          <Spacer />
+          <Box>
+            {totalYears}
+          </Box>
+        </Flex>
+      </div>
     </VStack>
   )
 }
