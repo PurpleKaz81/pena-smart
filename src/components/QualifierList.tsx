@@ -46,7 +46,7 @@ export default function QualifierList() {
                   {qualifier.label}
                 </Tooltip>
               </Checkbox>
-              <Text visibility="visible">{qualifier.years}</Text>
+              <Text visibility="hidden">{qualifier.years}</Text>
             </HStack>
           </Box>
         </div>
@@ -58,7 +58,7 @@ export default function QualifierList() {
           </Box>
           <Spacer />
           <Box>
-            {totalYears}
+            <Text visibility="hidden">{totalYears}</Text>
           </Box>
         </Flex>
       </div>
