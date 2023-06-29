@@ -12,8 +12,8 @@ interface Qualifier {
 
 export default function QualifierList() {
   const [baseSentence, setBaseSentence] = useState(6)
-  const [qualifiers, setQualifiers] = useState([])
-  const [selectedQualifiers, setSelectedQualifiers] = useState(0)
+  const [qualifiers, setQualifiers] = useState<Qualifier[]>([])
+  const [checkedQualifiers, setCheckedQualifiers] = useState<Qualifier[]>([])
   const [totalYears, setTotalYears] = useState(0)
 
   useEffect(() => {
@@ -25,30 +25,34 @@ export default function QualifierList() {
   }, [])
 
   function handleCheckboxChange(qualifier: Qualifier, event: ChangeEvent<HTMLInputElement>) {
-    let newSelectedQualifiers = selectedQualifiers
-    let newTotalYears = totalYears
+    let newCheckedQualifiers = [...checkedQualifiers]
     if (event.target.checked) {
-      newSelectedQualifiers++
-      newTotalYears += qualifier.years
+      newCheckedQualifiers.push(qualifier)
     } else {
-      newSelectedQualifiers--
-      newTotalYears -= qualifier.years
+      newCheckedQualifiers = newCheckedQualifiers.filter(q => q.id !== qualifier.id)
     }
 
+    const additionalYears = (newCheckedQualifiers.length > 1) ? (newCheckedQualifiers.length - 1) * 1.5 : 0
+    newCheckedQualifiers.forEach((q, index) => {
+      if (index === 0) {
+        q.years = 0
+      } else {
+        q.years = 1.5
+      }
+    })
+    setCheckedQualifiers(newCheckedQualifiers)
+    setTotalYears(additionalYears)
+
     let newBaseSentence = baseSentence
-    if (newSelectedQualifiers === 1) {
+    if (newCheckedQualifiers.length === 1) {
       newBaseSentence = 12  // when the first qualifier is selected, the base sentence becomes 12 years
-    } else if (newSelectedQualifiers > 1) {
-      newBaseSentence += 1.5  // for each additional qualifier beyond the first one, add 1.5 years
+    } else if (newCheckedQualifiers.length > 1) {
+      newBaseSentence = 12 + additionalYears // for each additional qualifier beyond the first one, add 1.5 years
     } else {
       newBaseSentence = 6  // if there are no qualifiers, the base sentence is 6 years
     }
-
     setBaseSentence(newBaseSentence)
-    setSelectedQualifiers(newSelectedQualifiers)
-    setTotalYears(newTotalYears)
   }
-
 
   return (
     <VStack
@@ -72,7 +76,9 @@ export default function QualifierList() {
                   {qualifier.label}
                 </Tooltip>
               </Checkbox>
-              <Text visibility="hidden">{qualifier.years}</Text>
+              <Text visibility={checkedQualifiers.includes(qualifier) && checkedQualifiers.length > 1 ? "visible" : "hidden"}>
+                {qualifier.years}
+              </Text>
             </HStack>
           </Box>
         </div>
@@ -83,7 +89,7 @@ export default function QualifierList() {
         </Box>
         <Spacer />
         <Box>
-          <Text visibility="hidden">{totalYears}</Text>
+          <Text visibility={checkedQualifiers.length > 1 ? "visible" : "hidden"}>{totalYears}</Text>
         </Box>
       </Flex>
       <Box>
