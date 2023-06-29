@@ -83,9 +83,16 @@ export default function QualifierList() {
                   {qualifier.label}
                 </Tooltip>
               </Checkbox>
-              <Text visibility={checkedQualifiers.includes(qualifier) && checkedQualifiers.length > 1 ? "visible" : "hidden"}>
+              {qualifier.years === 0
+              ? <Tooltip label="Apenas qualifica o crime">
+                  <Text visibility={checkedQualifiers.includes(qualifier) && checkedQualifiers.length > 1 ? "visible" : "hidden"}>
+                    {qualifier.years}
+                  </Text>
+                </Tooltip>
+              : <Text visibility={checkedQualifiers.includes(qualifier) && checkedQualifiers.length > 1 ? "visible" : "hidden"}>
                 {qualifier.years}
-              </Text>
+                </Text>
+              }
             </HStack>
           </Box>
         </div>
