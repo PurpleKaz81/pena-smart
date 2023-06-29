@@ -1,6 +1,13 @@
 import { VStack, StackDivider, Tooltip, Box, HStack, Checkbox, Text, Flex, Spacer } from "@chakra-ui/react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
 import axios from "axios"
+
+interface Qualifier {
+  id: string,
+  label: string,
+  value: string,
+  years: number
+}
 
 export default function QualifierList() {
   const [totalYears, setTotalYears] = useState(0)
@@ -14,7 +21,7 @@ export default function QualifierList() {
       .catch(error => console.error('Error fetching data: ', error))
   }, [])
 
-  function handleCheckboxChange(qualifier, event) {
+  function handleCheckboxChange(qualifier: Qualifier, event: ChangeEvent<HTMLInputElement>) {
     if (event.target.checked) {
       setTotalYears(totalYears + qualifier.years)
     } else {
@@ -29,7 +36,7 @@ export default function QualifierList() {
       align='stretch'
       mt={4}
     >
-      {qualifiers.map(qualifier => (
+      {qualifiers.map((qualifier: Qualifier) => (
         <div className="qualifier" key={qualifier.id}>
           <Box>
             <HStack justifyContent="space-between" w="100%">
