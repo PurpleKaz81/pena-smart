@@ -32,6 +32,11 @@ export default function QualifierList() {
       newCheckedQualifiers = newCheckedQualifiers.filter(q => q.id !== qualifier.id)
     }
 
+    // Sort qualifiers based on their order in `qualifiers`
+    newCheckedQualifiers.sort((a, b) => {
+      return qualifiers.indexOf(a) - qualifiers.indexOf(b)
+    })
+
     const additionalYears = (newCheckedQualifiers.length > 1) ? (newCheckedQualifiers.length - 1) * 1.5 : 0
     newCheckedQualifiers.forEach((q, index) => {
       if (index === 0) {
@@ -40,19 +45,21 @@ export default function QualifierList() {
         q.years = 1.5
       }
     })
+
     setCheckedQualifiers(newCheckedQualifiers)
     setTotalYears(additionalYears)
 
     let newBaseSentence = baseSentence
     if (newCheckedQualifiers.length === 1) {
-      newBaseSentence = 12  // when the first qualifier is selected, the base sentence becomes 12 years
+      newBaseSentence = 12 // when the first qualifier is selected, the base sentence becomes 12 years
     } else if (newCheckedQualifiers.length > 1) {
       newBaseSentence = 12 + additionalYears // for each additional qualifier beyond the first one, add 1.5 years
     } else {
-      newBaseSentence = 6  // if there are no qualifiers, the base sentence is 6 years
+      newBaseSentence = 6 // if there are no qualifiers, the base sentence is 6 years
     }
     setBaseSentence(newBaseSentence)
   }
+
 
   return (
     <VStack
