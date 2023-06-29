@@ -4,7 +4,7 @@ import { Box } from "@chakra-ui/react"
 
 export default function HeaderSlogan() {
   return (
-    <Box p={1} maxH="5rem" display="grid" alignItems="center" justifyContent="center">
+    <Box p={1} maxH="10rem" display="grid" alignItems="center" justifyContent="center">
         <Header />
         <Slogan />
     </Box>

@@ -1,9 +1,9 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Heading } from '@chakra-ui/react'
 
 export default function Header() {
   return (
     <Box p={1} display="flex" justifyContent="center">
-      <h1>Pena Smart</h1>
+      <Heading as="h1" size="xl">Pena Smart</Heading>
     </Box>
   )
 }
