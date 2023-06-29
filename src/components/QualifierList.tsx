@@ -1,5 +1,6 @@
 import { VStack, StackDivider, Tooltip, Box, HStack, Checkbox, Text, Flex, Spacer } from "@chakra-ui/react"
 import { useState, useEffect, ChangeEvent } from "react"
+import PenaBase from "./PenaBase"
 import axios from "axios"
 
 interface Qualifier {
@@ -12,6 +13,7 @@ interface Qualifier {
 export default function QualifierList() {
   const [baseSentence, setBaseSentence] = useState(6)
   const [qualifiers, setQualifiers] = useState([])
+  const [selectedQualifiers, setSelectedQualifiers] = useState(0)
   const [totalYears, setTotalYears] = useState(0)
 
   useEffect(() => {
@@ -23,14 +25,30 @@ export default function QualifierList() {
   }, [])
 
   function handleCheckboxChange(qualifier: Qualifier, event: ChangeEvent<HTMLInputElement>) {
+    let newSelectedQualifiers = selectedQualifiers
+    let newTotalYears = totalYears
     if (event.target.checked) {
-      setBaseSentence(baseSentence + qualifier.years)
-      setTotalYears(totalYears + qualifier.years)
+      newSelectedQualifiers++
+      newTotalYears += qualifier.years
     } else {
-      setBaseSentence(baseSentence - qualifier.years)
-      setTotalYears(totalYears - qualifier.years)
+      newSelectedQualifiers--
+      newTotalYears -= qualifier.years
     }
+
+    let newBaseSentence = baseSentence
+    if (newSelectedQualifiers === 1) {
+      newBaseSentence = 12  // when the first qualifier is selected, the base sentence becomes 12 years
+    } else if (newSelectedQualifiers > 1) {
+      newBaseSentence += 1.5  // for each additional qualifier beyond the first one, add 1.5 years
+    } else {
+      newBaseSentence = 6  // if there are no qualifiers, the base sentence is 6 years
+    }
+
+    setBaseSentence(newBaseSentence)
+    setSelectedQualifiers(newSelectedQualifiers)
+    setTotalYears(newTotalYears)
   }
+
 
   return (
     <VStack
@@ -68,6 +86,9 @@ export default function QualifierList() {
           <Text visibility="hidden">{totalYears}</Text>
         </Box>
       </Flex>
+      <Box>
+        <PenaBase baseSentence={baseSentence} />
+      </Box>
     </VStack>
   )
 }
