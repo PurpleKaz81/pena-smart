@@ -10,8 +10,9 @@ interface Qualifier {
 }
 
 export default function QualifierList() {
-  const [totalYears, setTotalYears] = useState(0)
+  const [baseSentence, setBaseSentence] = useState(6)
   const [qualifiers, setQualifiers] = useState([])
+  const [totalYears, setTotalYears] = useState(0)
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/qualifiers')
@@ -23,8 +24,10 @@ export default function QualifierList() {
 
   function handleCheckboxChange(qualifier: Qualifier, event: ChangeEvent<HTMLInputElement>) {
     if (event.target.checked) {
+      setBaseSentence(baseSentence + qualifier.years)
       setTotalYears(totalYears + qualifier.years)
     } else {
+      setBaseSentence(baseSentence - qualifier.years)
       setTotalYears(totalYears - qualifier.years)
     }
   }
@@ -56,17 +59,15 @@ export default function QualifierList() {
           </Box>
         </div>
       ))}
-      <div>
-        <Flex>
-          <Box>
-            Soma das qualificadoras:
-          </Box>
-          <Spacer />
-          <Box>
-            <Text visibility="hidden">{totalYears}</Text>
-          </Box>
-        </Flex>
-      </div>
+      <Flex>
+        <Box>
+          Soma das qualificadoras:
+        </Box>
+        <Spacer />
+        <Box>
+          <Text visibility="hidden">{totalYears}</Text>
+        </Box>
+      </Flex>
     </VStack>
   )
 }
